@@ -142,9 +142,9 @@ class HBNBCommand(cmd.Cmd):
                 obj.save()
 
         except SyntaxError:
-                 print("** class name missing **")
+            print("** class name missing **")
         except NameError:
-                 print("** class doesn't exist **")
+            print("** class doesn't exist **")
 
     def help_create(self):
         """ Help information for the create method """
@@ -339,6 +339,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
