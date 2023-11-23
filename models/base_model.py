@@ -10,6 +10,7 @@ from sqlalchemy import String
 
 Base = declarative_base()
 
+
 class BaseModel:
     """A base class for all hbnb models"""
 
@@ -30,21 +31,25 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
+        d =  self.__dict__.copy()
+        d.pop("_sa_instance_state", None)
+        return '[{}] ({}) {}'.format(type(self).__name__, self.id, d)
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        from models import storage
-        self.updated_at = datetime.now()
-        storage.save()
+        self.updated_at = datetime.utcnow()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        my_diction = self.__dict__.copy()
+        my_diction["__class__"] = str(type(self).__name__)
+        my_diction["created_at"] = self.created_at.isoformat()
+        my_diction["updated_at"] = self.updated_at.isoformat()
+        my_diction.pop("_sa_instance_state".None)
+        return my_diction
+
+    def delete(self):
+        """Delete the current instance from storage."""
+        models.storage.delete(self)

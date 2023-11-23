@@ -15,20 +15,20 @@ from sqlalchemy import Table
 from sqlalchemy.orm import relationship
 
 
-associate_table = Table("place_amenity", Base.metadata,
-                        Column("place_id", String(60),
-                            ForeignKey("places.id"),
-                            primary_key=True, nullable=False),
-                        Column("amenities.id", String(60),
-                               ForeignKey("amenities.id"),
-                               primary_key=True, nullable=False))
+association_table = Table("place_amenity", Base.metadata,
+                          Column("place_id", String(60),
+                                 ForeignKey("places.id"),
+                                 primary_key=True, nullable=False),
+                          Column("amenity_id", String(60),
+                                 ForeignKey("amenities.id"),
+                                 primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
-    user_id = Column(String(60),ForeignKey("users.id"), nullable=False)
+    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024))
     number_rooms = Column(Integer, default=0)
@@ -37,7 +37,7 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
-    reviews =  relationship("Reviews", backref="place", cascade="delete")
+    reviews =  relationship("Review", backref="place", cascade="delete")
     amenities = relationship("Amenity", secondary="place_amenity",
                              viewonly=False)
     amenity_ids = []
@@ -48,14 +48,14 @@ class Place(BaseModel, Base):
             """Get a list of all linked Reviews."""
             review_lt = []
             for review in list(models.storage.all(Review).values()):
-                if review.place.id == self.id:
+                if review.place_id == self.id:
                     review_lt.append(review)
             return review_lt
 
         @property
         def amenities(self):
             """Get/set linked Amenities."""
-            amenity_list = []
+            amenity_lt = []
             for amenity in list(models.storage.all(Amenity).values()):
                 if amenity.id in self.amenity_ids:
                     amenity_lt.append(amenity)

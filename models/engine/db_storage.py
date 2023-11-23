@@ -19,7 +19,7 @@ class DBStorage:
     """Represents a database storage engine"""
 
     __engine = None
-    __engine = None
+    __session = None
 
     def __init__(self):
         """Intialiize a new DBStorage instances."""
@@ -28,7 +28,7 @@ class DBStorage:
                                               getenv("HBNB_MYSQL_PWD"),
                                               getenv("HBNB_MYSQL_HOST"),
                                               getenv("HBNB_MYSQL_DB")),
-                                      pool_pre_ping=True)
+                                       pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -48,7 +48,7 @@ class DBStorage:
             if type(cls) == str:
                 cls = eval(cls)
             objs = self.__session.query(cls)
-        return {"{}.{}".format(type(op).__name__, o.id): op for op in objs}
+        return {"{}.{}".format(type(op).__name__, op.id): op for op in objs}
 
     def new(self, obj):
         """Add obj to the current database session."""
@@ -68,7 +68,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        Session = scoped_session(session_favtory)
+        Session = scoped_session(session_factory)
         self.__session = Session()
 
     def close(self):
