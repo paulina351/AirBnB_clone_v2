@@ -47,7 +47,7 @@ class BaseModel:
         my_diction["__class__"] = str(type(self).__name__)
         my_diction["created_at"] = self.created_at.isoformat()
         my_diction["updated_at"] = self.updated_at.isoformat()
-        my_diction.pop("_sa_instance_state".None)
+        my_diction.pop("_sa_instance_state", None)
         return my_diction
 
     def delete(self):
