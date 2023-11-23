@@ -32,14 +32,14 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
-        opdict = {op: self.__objects[o].to_dict() for op in self.__objects.keys()}
+        opdict = {op: self.__objects[op].to_dict() for op in self.__objects.keys()}
         with open(self.__file_path, 'w', encoding="utf-8") as f:
             json.dump(opdict, f)
 
     def reload(self):
         """Loads storage dictionary from file"""
         try:
-            with open(self.__file_path, 'r', encording="utf-8") as f:
+            with open(self.__file_path, 'r', encoding="utf-8") as f:
                 for op in json.load(f).values():
                     name = op["__class__"]
                     del op["__class__"]

@@ -3,9 +3,9 @@
 import cmd
 import sys
 from shlex import split
+from models import storage
 from datetime import datetime
 from models.base_model import BaseModel
-from models.__init__ import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -141,9 +141,9 @@ class HBNBCommand(cmd.Cmd):
                 print(obj.id)
                 obj.save()
 
-            except SyntaxError:
+        except SyntaxError:
                  print("** class name missing **")
-            except NameError:
+        except NameError:
                  print("** class doesn't exist **")
 
     def help_create(self):
