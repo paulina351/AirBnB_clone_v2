@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """A  script that starts a Flask web application
-   /c/<text>: display “C ” followed by the value of 
+   /c/<text>: display “C ” followed by the value of
    the text variable (replace underscore _ symbols
    with a space )
 """
@@ -22,14 +22,15 @@ def hello_route():
 def hbnb_route():
     return "HBNB"
 
+
 @app.route("/c/is_fun", strict_slashes=False)
 def c_route():
     return "C is fun"
 
 
-@app.route("/c/<cool>", strict_slashes=False)
+@app.route("/c/cool", strict_slashes=False)
 def c_route_2(cool):
-    return f"C {escape(cool)}"
+    return "C cool"
 
 
 if __name__ == "__main__":
