@@ -29,7 +29,7 @@ def c_route():
 
 
 @app.route("/c/cool", strict_slashes=False)
-def c_route_2(cool):
+def c_route_2():
     return "C cool"
 
 
